@@ -44,7 +44,7 @@ public class VenueHireSystem {
     }
   }
 
-  // Uses switch case, to turn and integer into a string representation
+  // Uses a switch case, to turn and integer into a string representation
   public String convertStringtoNum(int number) {
     switch (number) {
       case 1:
