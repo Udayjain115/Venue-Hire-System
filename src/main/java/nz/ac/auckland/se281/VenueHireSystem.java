@@ -9,10 +9,13 @@ public class VenueHireSystem {
 
   public void printVenues() {
     // TODO implement this method
+    MessageCli.NO_VENUES.printMessage();
   }
 
   public void createVenue(
       String venueName, String venueCode, String capacityInput, String hireFeeInput) {
+    // Still need to include logic around correct venue's
+    MessageCli.VENUE_SUCCESSFULLY_CREATED.printMessage(venueName, venueCode);
     // TODO implement this method
   }
 
