@@ -66,7 +66,7 @@ public class VenueHireSystem {
       case 9:
         return "nine";
       default: // Should never be used because only called when venueList.size() is larger than one
-               // and smaller than 10
+        // and smaller than 10
         return "many";
     }
   }
@@ -96,6 +96,7 @@ public class VenueHireSystem {
         validVenueCode = false;
         repeatCode = code.getVenueCode();
         repeatVenueCodeName = code.getVenueName();
+        break;
 
       } else {
         validVenueCode = true;
