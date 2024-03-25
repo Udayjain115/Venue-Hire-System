@@ -38,14 +38,14 @@ public class Venue {
     return true;
   }
 
-  // Checks For Capacity Validity by First trying to parse it as an integer,
-  // if that doesnt work then throws error at user,
-  // if it does work but Num is negative then also throws error at user
   public boolean isCapacityValid(String convertingNum) {
+
+    // Checks For Capacity Validity by First trying to parse it as an integer,
+    // if that doesnt work then throws error at user,
+    // if it does work but Num is negative then also throws error at user
     try {
-      int Num = Integer.parseInt(convertingNum);
-      if (Num < 1) {
-        int hi = 1;
+      int num = Integer.parseInt(convertingNum);
+      if (num < 1) {
         MessageCli.VENUE_NOT_CREATED_INVALID_NUMBER.printMessage("capacity", " positive");
         return false;
       }
@@ -56,11 +56,11 @@ public class Venue {
     }
   }
 
-  // Same logic as isCapacityValid but uses hire fee instead
   public boolean isHireFeeValid(String hireFeeInput2) {
+    // Same logic as isCapacityValid but uses hire fee for messageCli instead
     try {
-      int Num = Integer.parseInt(hireFeeInput2);
-      if (Num < 1) {
+      int num = Integer.parseInt(hireFeeInput2);
+      if (num < 1) {
         MessageCli.VENUE_NOT_CREATED_INVALID_NUMBER.printMessage("hire fee", " positive");
         return false;
       }

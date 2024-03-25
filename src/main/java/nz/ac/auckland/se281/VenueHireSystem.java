@@ -74,16 +74,23 @@ public class VenueHireSystem {
   public void createVenue(
       String venueName, String venueCode, String capacityInput, String hireFeeInput) {
 
-    Venue venue = new Venue(venueName, venueCode, capacityInput, hireFeeInput);
+    Venue venue =
+        new Venue(
+            venueName,
+            venueCode,
+            capacityInput,
+            hireFeeInput); // Creates a seperate class for venues
 
+    // boolean values to check for validity of all variables
     boolean validVenueName = venue.venueNameValid();
     boolean validVenueCode = true;
     boolean validCapacityInput = venue.isCapacityValid(capacityInput);
     boolean validHireFeeInput = venue.isHireFeeValid(hireFeeInput);
-
+    // empty strings that are only set to non-empty strings and used when validVenueCode is false
     String repeatCode = "";
     String repeatVenueCodeName = "";
 
+    // Checks if a venue code is used in any other venue in the array list
     for (Venue code : venueList) {
       if (code.getVenueCode().equals(venueCode)) {
         validVenueCode = false;
@@ -94,14 +101,15 @@ public class VenueHireSystem {
         validVenueCode = true;
       }
     }
+    // checks if all the validity checkers are valid and only then adds the venue to the arraylist
     if ((validVenueName && validVenueCode && validCapacityInput && validHireFeeInput) == true) {
       venueList.add(venue);
       MessageCli.VENUE_SUCCESSFULLY_CREATED.printMessage(venueName, venueCode);
-
+      // if venue name is empty sends message to user
     } else if (!validVenueName) {
       MessageCli.VENUE_NOT_CREATED_EMPTY_NAME.printMessage();
     } else if (!validVenueCode) {
-
+      // if venue code is already in use tells the user
       MessageCli.VENUE_NOT_CREATED_CODE_EXISTS.printMessage(repeatCode, repeatVenueCodeName);
     }
   }
