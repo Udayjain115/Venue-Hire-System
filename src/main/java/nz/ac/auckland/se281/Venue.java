@@ -30,10 +30,10 @@ public class Venue {
     return hireFeeInput;
   }
 
-  public boolean valid() {
+  
 
-    return true;
-  }
+  
+  
 
   public boolean venueNameValid() {
     if (this.venueName.trim().isEmpty() == true) {

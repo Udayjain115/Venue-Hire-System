@@ -10,20 +10,47 @@ public class VenueHireSystem {
   public VenueHireSystem() {}
 
   public void printVenues() {
-    // TODO implement this method
-    MessageCli.NO_VENUES.printMessage(); // Need to actually implement logic
+    if (venueList.size() == 0) {
+      MessageCli.NO_VENUES.printMessage();
+    } else if (venueList.size() == 1) {
+      MessageCli.NUMBER_VENUES.printMessage("is", "one", "");
+      MessageCli.VENUE_ENTRY.printMessage(
+          venueList.get(0).getVenueName(),
+          venueList.get(0).getVenueCode(),
+          venueList.get(0).getCapacityInput(),
+          venueList.get(0).getHireFeeInput());
+    }
   }
 
   public void createVenue(
       String venueName, String venueCode, String capacityInput, String hireFeeInput) {
+
     Venue venue = new Venue(venueName, venueCode, capacityInput, hireFeeInput);
+
     boolean validVenueName = venue.venueNameValid();
-    if (validVenueName == true) {
+    boolean validVenueCode = true;
+    String repeatCode = "";
+    String repeatVenueCodeName = "";
+
+    for (Venue code : venueList) {
+      if (code.getVenueCode().equals(venueCode)) {
+        validVenueCode = false;
+        repeatCode = code.getVenueCode();
+        repeatVenueCodeName = code.getVenueName();
+
+      } else {
+        validVenueCode = true;
+      }
+    }
+    if ((validVenueName && validVenueCode) == true) {
       venueList.add(venue);
       MessageCli.VENUE_SUCCESSFULLY_CREATED.printMessage(venueName, venueCode);
 
-    } else {
+    } else if (!validVenueName) {
       MessageCli.VENUE_NOT_CREATED_EMPTY_NAME.printMessage();
+    } else if (!validVenueCode) {
+
+      MessageCli.VENUE_NOT_CREATED_CODE_EXISTS.printMessage(repeatCode, repeatVenueCodeName);
     }
   }
 
