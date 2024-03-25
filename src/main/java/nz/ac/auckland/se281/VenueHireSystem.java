@@ -20,6 +20,55 @@ public class VenueHireSystem {
           venueList.get(0).getCapacityInput(),
           venueList.get(0).getHireFeeInput());
     }
+    // Prints out Each Venue in venueList, converts the amount of venues
+    // to a word representation
+    else if ((venueList.size() > 1) && (venueList.size() < 10)) {
+      String numWord = convertStringtoNum(venueList.size());
+      MessageCli.NUMBER_VENUES.printMessage("are", numWord, "s");
+      for (int i = 0; i < venueList.size(); i++) {
+        MessageCli.VENUE_ENTRY.printMessage(
+            venueList.get(i).getVenueName(),
+            venueList.get(i).getVenueCode(),
+            venueList.get(i).getCapacityInput(),
+            venueList.get(i).getHireFeeInput());
+      }
+    } else {
+      MessageCli.NUMBER_VENUES.printMessage("are", String.valueOf(venueList.size()), "s");
+      for (int i = 0; i < venueList.size(); i++) {
+        MessageCli.VENUE_ENTRY.printMessage(
+            venueList.get(i).getVenueName(),
+            venueList.get(i).getVenueCode(),
+            venueList.get(i).getCapacityInput(),
+            venueList.get(i).getHireFeeInput());
+      }
+    }
+  }
+
+  // Uses switch case, to turn and integer into a string representation
+  public String convertStringtoNum(int number) {
+    switch (number) {
+      case 1:
+        return "one";
+      case 2:
+        return "two";
+      case 3:
+        return "three";
+      case 4:
+        return "four";
+      case 5:
+        return "five";
+      case 6:
+        return "six";
+      case 7:
+        return "seven";
+      case 8:
+        return "eight";
+      case 9:
+        return "nine";
+      default: // Should never be used because only called when venueList.size() is larger than one
+               // and smaller than 10
+        return "many";
+    }
   }
 
   public void createVenue(
@@ -29,6 +78,9 @@ public class VenueHireSystem {
 
     boolean validVenueName = venue.venueNameValid();
     boolean validVenueCode = true;
+    boolean validCapacityInput = venue.isCapacityValid(capacityInput);
+    boolean validHireFeeInput = venue.isHireFeeValid(hireFeeInput);
+
     String repeatCode = "";
     String repeatVenueCodeName = "";
 
@@ -42,7 +94,7 @@ public class VenueHireSystem {
         validVenueCode = true;
       }
     }
-    if ((validVenueName && validVenueCode) == true) {
+    if ((validVenueName && validVenueCode && validCapacityInput && validHireFeeInput) == true) {
       venueList.add(venue);
       MessageCli.VENUE_SUCCESSFULLY_CREATED.printMessage(venueName, venueCode);
 
