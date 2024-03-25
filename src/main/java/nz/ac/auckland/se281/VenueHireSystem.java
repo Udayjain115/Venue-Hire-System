@@ -1,22 +1,30 @@
 package nz.ac.auckland.se281;
 
+import java.util.ArrayList;
 import nz.ac.auckland.se281.Types.CateringType;
 import nz.ac.auckland.se281.Types.FloralType;
 
 public class VenueHireSystem {
+  private ArrayList<Venue> venueList = new ArrayList<Venue>();
 
   public VenueHireSystem() {}
 
   public void printVenues() {
     // TODO implement this method
-    MessageCli.NO_VENUES.printMessage();
+    MessageCli.NO_VENUES.printMessage(); // Need to actually implement logic
   }
 
   public void createVenue(
       String venueName, String venueCode, String capacityInput, String hireFeeInput) {
-    // Still need to include logic around correct venue's
-    MessageCli.VENUE_SUCCESSFULLY_CREATED.printMessage(venueName, venueCode);
-    // TODO implement this method
+    Venue venue = new Venue(venueName, venueCode, capacityInput, hireFeeInput);
+    boolean validVenueName = venue.venueNameValid();
+    if (validVenueName == true) {
+      venueList.add(venue);
+      MessageCli.VENUE_SUCCESSFULLY_CREATED.printMessage(venueName, venueCode);
+
+    } else {
+      MessageCli.VENUE_NOT_CREATED_EMPTY_NAME.printMessage();
+    }
   }
 
   public void setSystemDate(String dateInput) {
