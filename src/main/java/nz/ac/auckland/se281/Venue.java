@@ -14,6 +14,7 @@ public class Venue {
     this.hireFeeInput = hireFeeInput;
   }
 
+  // Getter Functions
   public String getVenueName() {
     return venueName;
   }

@@ -96,7 +96,7 @@ public class VenueHireSystem {
         validVenueCode = false;
         repeatCode = code.getVenueCode();
         repeatVenueCodeName = code.getVenueName();
-        break;
+        break; // Break statement so that loops is exited if same venue code found
 
       } else {
         validVenueCode = true;
