@@ -141,6 +141,7 @@ public class VenueHireSystem {
   public void makeBooking(String[] options) {
     int[] bookingDate = convertDateToInt(options[1]);
     int[] currentDate = convertDateToInt(systemDate);
+    String bookingName = "";
     boolean isDateValid = false;
     if (bookingDate[2] > currentDate[2]) {
       isDateValid = true;
@@ -160,6 +161,7 @@ public class VenueHireSystem {
     for (Venue code : venueList) {
       if (options[0].equals(code.getVenueCode())) {
         doesCodeExist = true;
+        bookingName = code.getVenueName();
         break;
       }
     }
@@ -172,6 +174,12 @@ public class VenueHireSystem {
       MessageCli.BOOKING_NOT_MADE_VENUE_NOT_FOUND.printMessage(options[0]);
     } else if (!isDateValid) {
       MessageCli.BOOKING_NOT_MADE_PAST_DATE.printMessage(options[1], systemDate);
+    } else {
+      MessageCli.MAKE_BOOKING_SUCCESSFUL.printMessage(
+          BookingReferenceGenerator.generateBookingReference(),
+          bookingName,
+          options[1],
+          options[3]);
     }
   }
 
