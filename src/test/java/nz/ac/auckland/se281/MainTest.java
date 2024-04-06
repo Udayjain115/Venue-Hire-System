@@ -713,6 +713,32 @@ public class MainTest {
       runCommands(PRINT_VENUES);
       assertContains("There are no venues in the system. Please create a venue first.");
     }
+
+    @Test
+    public void T4_06_make_booking_venue_not_found() throws Exception {
+      runCommands(
+          unpack(
+              CREATE_TEN_VENUES,
+              SET_DATE,
+              "26/02/2024", //
+              MAKE_BOOKING,
+              options("100000", "27/02/2024", "client001@email.com", "230")));
+
+      assertContains("Booking not made");
+    }
+
+    @Test
+    public void T4_02_date_in_past() throws Exception {
+      runCommands(
+          unpack(
+              CREATE_TEN_VENUES,
+              SET_DATE,
+              "26/02/2024", //
+              MAKE_BOOKING,
+              options("GGG", "31/10/2022", "client001@email.com", "230")));
+
+      assertContains("Booking not made");
+    }
   }
 
   private static final Object[] CREATE_NINE_VENUES =
