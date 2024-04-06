@@ -119,7 +119,6 @@ public class VenueHireSystem {
   public void setSystemDate(String dateInput) {
     this.systemDate = dateInput;
     MessageCli.DATE_SET.printMessage(systemDate);
-    // TODO implement this method
   }
 
   public void printSystemDate() {
@@ -128,8 +127,6 @@ public class VenueHireSystem {
     } else {
       MessageCli.CURRENT_DATE.printMessage(systemDate);
     }
-
-    // TODO implement this method
   }
 
   public void makeBooking(String[] options) {
@@ -137,14 +134,17 @@ public class VenueHireSystem {
       MessageCli.BOOKING_NOT_MADE_DATE_NOT_SET.printMessage();
     } else if (venueList.size() == 0) {
       MessageCli.BOOKING_NOT_MADE_NO_VENUES.printMessage();
-    } else {
-      // TODO implement this method
     }
-
-    // TODO implement this method
+    for (Venue code : venueList) {
+      if (code.getVenueCode().equals(options[0])) {
+        break; // Break statement so that if entered option equals a venue code it goes to next
+               // iteration
+      }
+      if (code.getVenueCode().equals(options[0]) == false) {
+        MessageCli.BOOKING_NOT_MADE_VENUE_NOT_FOUND.printMessage(options[0]);
+      }
+    }
   }
-
-  // TODO implement this method
 
   public void printBookings(String venueCode) {
     // TODO implement this method
