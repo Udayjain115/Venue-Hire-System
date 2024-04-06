@@ -133,8 +133,18 @@ public class VenueHireSystem {
   }
 
   public void makeBooking(String[] options) {
+    if (systemDate == null) {
+      MessageCli.BOOKING_NOT_MADE_DATE_NOT_SET.printMessage();
+    } else if (venueList.size() == 0) {
+      MessageCli.BOOKING_NOT_MADE_NO_VENUES.printMessage();
+    } else {
+      // TODO implement this method
+    }
+
     // TODO implement this method
   }
+
+  // TODO implement this method
 
   public void printBookings(String venueCode) {
     // TODO implement this method
