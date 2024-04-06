@@ -172,7 +172,7 @@ public class VenueHireSystem {
     boolean bookingDateAlreadyInUse = false;
 
     for (Bookings booking : bookingList) {
-      if (options[1].equals(booking.getDate())) {
+      if (options[0].equals(booking.getVenueCode()) && options[1].equals(booking.getDate())) {
         bookingDateAlreadyInUse = true;
         break;
       }
@@ -195,8 +195,6 @@ public class VenueHireSystem {
       bookingList.add(booking);
       MessageCli.MAKE_BOOKING_SUCCESSFUL.printMessage(
           bookingRef, bookingName, options[1], options[3]);
-      // Need to create booking class, which will contain an array list of type booking with all
-      // this info, to be checked when printing bookings
     }
   }
 

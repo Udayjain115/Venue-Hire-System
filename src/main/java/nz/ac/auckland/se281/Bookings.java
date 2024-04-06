@@ -26,4 +26,12 @@ public class Bookings {
   public String getDate() {
     return Date;
   }
+
+  public String getName() {
+    return venueName;
+  }
+
+  public String getVenueCode() {
+    return venueCode;
+  }
 }
