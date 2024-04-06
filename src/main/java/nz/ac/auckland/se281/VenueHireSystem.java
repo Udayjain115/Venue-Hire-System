@@ -145,6 +145,7 @@ public class VenueHireSystem {
     int[] bookingDate = convertDateToInt(options[1]);
     int[] currentDate = convertDateToInt(systemDate);
     String bookingName = "";
+    int bookingCapacity = 0;
     boolean isDateValid = false;
     if (bookingDate[2] > currentDate[2]) {
       isDateValid = true;
@@ -165,6 +166,7 @@ public class VenueHireSystem {
       if (options[0].equals(code.getVenueCode())) {
         doesCodeExist = true;
         bookingName = code.getVenueName();
+        bookingCapacity = Integer.parseInt(code.getCapacityInput());
         break;
       }
     }
@@ -176,6 +178,13 @@ public class VenueHireSystem {
         bookingDateAlreadyInUse = true;
         break;
       }
+    }
+    if (Integer.parseInt(options[3]) < (0.25 * bookingCapacity)) {
+      String newAttendeeNumber = String.valueOf(0.25 * bookingCapacity);
+      String numWihoutDecimal = String.valueOf(newAttendeeNumber).split("\\.")[0];
+      MessageCli.BOOKING_ATTENDEES_ADJUSTED.printMessage(
+          options[3], numWihoutDecimal, String.valueOf(bookingCapacity));
+      options[3] = numWihoutDecimal;
     }
 
     if (systemDate == null) {
