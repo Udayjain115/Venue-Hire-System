@@ -6,6 +6,7 @@ import nz.ac.auckland.se281.Types.FloralType;
 
 public class VenueHireSystem {
   private ArrayList<Venue> venueList = new ArrayList<Venue>();
+  private String systemDate;
 
   public VenueHireSystem() {}
 
@@ -116,10 +117,18 @@ public class VenueHireSystem {
   }
 
   public void setSystemDate(String dateInput) {
+    this.systemDate = dateInput;
+    MessageCli.DATE_SET.printMessage(systemDate);
     // TODO implement this method
   }
 
   public void printSystemDate() {
+    if (systemDate == null) {
+      MessageCli.CURRENT_DATE.printMessage("not set");
+    } else {
+      MessageCli.CURRENT_DATE.printMessage(systemDate);
+    }
+
     // TODO implement this method
   }
 
