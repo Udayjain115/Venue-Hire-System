@@ -286,6 +286,7 @@ public class VenueHireSystem {
   //
 
   public void printBookings(String venueCode) {
+    boolean venueExists = false;
     for (Bookings bookings : bookingList) {
       if (bookings.getVenueCode().equals(venueCode)) {
         MessageCli.PRINT_BOOKINGS_HEADER.printMessage(bookings.getName());
@@ -297,7 +298,11 @@ public class VenueHireSystem {
       if (venue.getVenueCode().equals(venueCode)) {
         MessageCli.PRINT_BOOKINGS_HEADER.printMessage(venue.getVenueName());
         MessageCli.PRINT_BOOKINGS_NONE.printMessage(venue.getVenueName());
+        venueExists = true;
       }
+    }
+    if (venueExists == false) {
+      MessageCli.PRINT_BOOKINGS_VENUE_NOT_FOUND.printMessage(venueCode);
     }
   }
 
