@@ -34,4 +34,8 @@ public class Bookings {
   public String getVenueCode() {
     return venueCode;
   }
+
+  public String getBookingReference() {
+    return bookingReference;
+  }
 }
