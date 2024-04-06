@@ -130,21 +130,24 @@ public class VenueHireSystem {
   }
 
   public void makeBooking(String[] options) {
+    boolean doesCodeExist = false;
     if (systemDate == null) {
       MessageCli.BOOKING_NOT_MADE_DATE_NOT_SET.printMessage();
     } else if (venueList.size() == 0) {
       MessageCli.BOOKING_NOT_MADE_NO_VENUES.printMessage();
     }
     for (Venue code : venueList) {
-      if (code.getVenueCode().equals(options[0])) {
-        break; // Break statement so that if entered option equals a venue code it goes to next
-               // iteration
-      }
-      if (code.getVenueCode().equals(options[0]) == false) {
-        MessageCli.BOOKING_NOT_MADE_VENUE_NOT_FOUND.printMessage(options[0]);
+      if (options[0].equals(code.getVenueCode())) {
+        doesCodeExist = true;
+        break;
       }
     }
+    if (!doesCodeExist) {
+      MessageCli.BOOKING_NOT_MADE_VENUE_NOT_FOUND.printMessage(options[0]);
+    }
   }
+
+  //
 
   public void printBookings(String venueCode) {
     // TODO implement this method
