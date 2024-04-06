@@ -129,21 +129,49 @@ public class VenueHireSystem {
     }
   }
 
+  public int[] convertDateToInt(String date) {
+    String[] dateArray = date.split("/");
+    int day = Integer.parseInt(dateArray[0]);
+    int month = Integer.parseInt(dateArray[1]);
+    int year = Integer.parseInt(dateArray[2]);
+    int[] dateInt = {day, month, year};
+    return dateInt;
+  }
+
   public void makeBooking(String[] options) {
-    boolean doesCodeExist = false;
-    if (systemDate == null) {
-      MessageCli.BOOKING_NOT_MADE_DATE_NOT_SET.printMessage();
-    } else if (venueList.size() == 0) {
-      MessageCli.BOOKING_NOT_MADE_NO_VENUES.printMessage();
+    int[] bookingDate = convertDateToInt(options[1]);
+    int[] currentDate = convertDateToInt(systemDate);
+    boolean isDateValid = false;
+    if (bookingDate[2] > currentDate[2]) {
+      isDateValid = true;
+    } else if (bookingDate[2] == currentDate[2]) {
+      if (bookingDate[1] > currentDate[1]) {
+        isDateValid = true;
+      } else if (bookingDate[1] == currentDate[1]) {
+        if (bookingDate[0] >= currentDate[0]) {
+          isDateValid = true;
+        }
+      }
     }
+
+    boolean doesCodeExist = false;
+
+    // Checks that the booking code maps to a venue code
     for (Venue code : venueList) {
       if (options[0].equals(code.getVenueCode())) {
         doesCodeExist = true;
         break;
       }
     }
-    if (!doesCodeExist) {
+
+    if (systemDate == null) {
+      MessageCli.BOOKING_NOT_MADE_DATE_NOT_SET.printMessage();
+    } else if (venueList.size() == 0) {
+      MessageCli.BOOKING_NOT_MADE_NO_VENUES.printMessage();
+    } else if (!doesCodeExist) {
       MessageCli.BOOKING_NOT_MADE_VENUE_NOT_FOUND.printMessage(options[0]);
+    } else if (!isDateValid) {
+      MessageCli.BOOKING_NOT_MADE_PAST_DATE.printMessage(options[1], systemDate);
     }
   }
 
