@@ -41,7 +41,8 @@ public class VenueHireSystem {
             venueList.get(i).getVenueName(),
             venueList.get(i).getVenueCode(),
             venueList.get(i).getCapacityInput(),
-            venueList.get(i).getHireFeeInput());
+            venueList.get(i).getHireFeeInput(),
+            nextAvailableDate(venueList.get(i).getVenueCode()));
       }
     }
   }
@@ -122,6 +123,10 @@ public class VenueHireSystem {
     MessageCli.DATE_SET.printMessage(systemDate);
   }
 
+  public String getSystemDate() {
+    return systemDate;
+  }
+
   public void printSystemDate() {
     if (systemDate == null) {
       MessageCli.CURRENT_DATE.printMessage("not set");
@@ -130,6 +135,7 @@ public class VenueHireSystem {
     }
   }
 
+  // Method that converts a date string into an integer array
   public int[] convertDateToInt(String date) {
     String[] dateArray = date.split("/");
     int day = Integer.parseInt(dateArray[0]);
@@ -138,6 +144,71 @@ public class VenueHireSystem {
     int[] dateInt = {day, month, year};
     return dateInt;
   }
+
+  // Method that compares two dates and returns true if date1 is bigger than date2
+  public boolean dateBiggerThan(String date1, String date2) {
+    int[] date1Array = convertDateToInt(date1);
+    int[] date2Array = convertDateToInt(date2);
+    if (date1Array[2] > date2Array[2]) {
+      return true;
+    } else if (date1Array[2] == date2Array[2]) {
+      if (date1Array[1] > date2Array[1]) {
+        return true;
+      } else if (date1Array[1] == date2Array[1]) {
+        if (date1Array[0] > date2Array[0]) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  // Tries To find the next available date for a venue
+  public String nextAvailableDate(String code) {
+    String nextAvailableDate = "";
+    if (bookingList.size() == 0) {
+      return getSystemDate(); // Returns System date if there are no bookings
+    }
+    for (Bookings booking : bookingList) {
+      if (!(code.equals(booking.getVenueCode()))) {
+        return getSystemDate();
+      } else if (booking.getDate().equals(getSystemDate())) {
+
+      }
+    }
+    return "";
+  }
+
+  //   // Earliest date booked is set to an empty string and then is set to the earliest date the
+  // venue
+  //   // is booked.
+  //   String earlistdateBooked = "";
+  //   for (Bookings booking : bookingList) {
+  //     if (code.equals(booking.getVenueCode())) {
+  //       if (earlistdateBooked.equals("")) {
+  //         earlistdateBooked = booking.getDate();
+  //       } else {
+  //         int[] date1 = convertDateToInt(earlistdateBooked);
+  //         int[] date2 = convertDateToInt(booking.getDate());
+  //         if (date1[2] > date2[2]) {
+  //           earlistdateBooked = booking.getDate();
+  //         } else if (date1[2] == date2[2]) {
+  //           if (date1[1] > date2[1]) {
+  //             earlistdateBooked = booking.getDate();
+  //           } else if (date1[1] == date2[1]) {
+  //             if (date1[0] > date2[0]) {
+  //               earlistdateBooked = booking.getDate();
+  //             }
+  //           }
+  //         }
+  //       }
+  //     }
+  //   }
+  //
+  //   if (dateBiggerThan(earlistdateBooked, getSystemDate())) {
+  //     return getSystemDate();
+  //   }
+  //   return " ";
 
   public void makeBooking(String[] options) {
 
@@ -215,7 +286,19 @@ public class VenueHireSystem {
   //
 
   public void printBookings(String venueCode) {
-    // TODO implement this method
+    for (Bookings bookings : bookingList) {
+      if (bookings.getVenueCode().equals(venueCode)) {
+        MessageCli.PRINT_BOOKINGS_HEADER.printMessage(bookings.getName());
+        MessageCli.PRINT_BOOKINGS_ENTRY.printMessage(
+            bookings.getBookingReference(), bookings.getDate());
+      }
+    }
+    for (Venue venue : venueList) {
+      if (venue.getVenueCode().equals(venueCode)) {
+        MessageCli.PRINT_BOOKINGS_HEADER.printMessage(venue.getVenueName());
+        MessageCli.PRINT_BOOKINGS_NONE.printMessage(venue.getVenueName());
+      }
+    }
   }
 
   public void addCateringService(String bookingReference, CateringType cateringType) {
