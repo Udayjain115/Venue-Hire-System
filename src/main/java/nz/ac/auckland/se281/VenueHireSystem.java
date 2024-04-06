@@ -186,6 +186,11 @@ public class VenueHireSystem {
           options[3], numWihoutDecimal, String.valueOf(bookingCapacity));
       options[3] = numWihoutDecimal;
     }
+    if (Integer.parseInt(options[3]) > (bookingCapacity)) {
+      MessageCli.BOOKING_ATTENDEES_ADJUSTED.printMessage(
+          options[3], String.valueOf(bookingCapacity), String.valueOf(bookingCapacity));
+      options[3] = String.valueOf(bookingCapacity);
+    }
 
     if (systemDate == null) {
       MessageCli.BOOKING_NOT_MADE_DATE_NOT_SET.printMessage();
