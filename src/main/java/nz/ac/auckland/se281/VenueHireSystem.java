@@ -287,22 +287,38 @@ public class VenueHireSystem {
 
   public void printBookings(String venueCode) {
     boolean venueExists = false;
+    boolean bookingExists = false;
+    String venueName = "";
     for (Bookings bookings : bookingList) {
       if (bookings.getVenueCode().equals(venueCode)) {
-        MessageCli.PRINT_BOOKINGS_HEADER.printMessage(bookings.getName());
-        MessageCli.PRINT_BOOKINGS_ENTRY.printMessage(
-            bookings.getBookingReference(), bookings.getDate());
+        bookingExists = true;
+        venueName = bookings.getName();
       }
     }
-    for (Venue venue : venueList) {
-      if (venue.getVenueCode().equals(venueCode)) {
-        MessageCli.PRINT_BOOKINGS_HEADER.printMessage(venue.getVenueName());
-        MessageCli.PRINT_BOOKINGS_NONE.printMessage(venue.getVenueName());
-        venueExists = true;
+    if (bookingExists == true) {
+      MessageCli.PRINT_BOOKINGS_HEADER.printMessage(venueName);
+      for (Bookings bookings : bookingList) {
+        if (bookings.getVenueCode().equals(venueCode)) {
+          MessageCli.PRINT_BOOKINGS_ENTRY.printMessage(
+              bookings.getBookingReference(), bookings.getDate());
+        }
       }
     }
-    if (venueExists == false) {
-      MessageCli.PRINT_BOOKINGS_VENUE_NOT_FOUND.printMessage(venueCode);
+    if (bookingExists == false) {
+      for (Venue venue : venueList) {
+        if (venue.getVenueCode().equals(venueCode)) {
+          MessageCli.PRINT_BOOKINGS_HEADER.printMessage(venue.getVenueName());
+          MessageCli.PRINT_BOOKINGS_NONE.printMessage(venue.getVenueName());
+        }
+        for (Venue venueExistCheck : venueList) {
+          if (venueExistCheck.getVenueCode().equals(venueCode)) {
+            venueExists = true;
+          }
+        }
+        if (venueExists == false) {
+          MessageCli.PRINT_BOOKINGS_VENUE_NOT_FOUND.printMessage(venueCode);
+        }
+      }
     }
   }
 
