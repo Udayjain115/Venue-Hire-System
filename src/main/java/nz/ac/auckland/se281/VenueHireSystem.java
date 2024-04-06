@@ -6,6 +6,7 @@ import nz.ac.auckland.se281.Types.FloralType;
 
 public class VenueHireSystem {
   private ArrayList<Venue> venueList = new ArrayList<Venue>();
+  private ArrayList<Bookings> bookingList = new ArrayList<Bookings>();
   private String systemDate;
 
   public VenueHireSystem() {}
@@ -139,6 +140,8 @@ public class VenueHireSystem {
   }
 
   public void makeBooking(String[] options) {
+
+    // Checks Whether the booking date is in the past
     int[] bookingDate = convertDateToInt(options[1]);
     int[] currentDate = convertDateToInt(systemDate);
     String bookingName = "";
@@ -166,6 +169,15 @@ public class VenueHireSystem {
       }
     }
 
+    boolean bookingDateAlreadyInUse = false;
+
+    for (Bookings booking : bookingList) {
+      if (options[1].equals(booking.getDate())) {
+        bookingDateAlreadyInUse = true;
+        break;
+      }
+    }
+
     if (systemDate == null) {
       MessageCli.BOOKING_NOT_MADE_DATE_NOT_SET.printMessage();
     } else if (venueList.size() == 0) {
@@ -174,12 +186,17 @@ public class VenueHireSystem {
       MessageCli.BOOKING_NOT_MADE_VENUE_NOT_FOUND.printMessage(options[0]);
     } else if (!isDateValid) {
       MessageCli.BOOKING_NOT_MADE_PAST_DATE.printMessage(options[1], systemDate);
+    } else if (bookingDateAlreadyInUse) {
+      MessageCli.BOOKING_NOT_MADE_VENUE_ALREADY_BOOKED.printMessage(bookingName, options[1]);
     } else {
+      String bookingRef = BookingReferenceGenerator.generateBookingReference();
+      Bookings booking =
+          new Bookings(options[0], options[1], options[2], options[3], bookingRef, bookingName);
+      bookingList.add(booking);
       MessageCli.MAKE_BOOKING_SUCCESSFUL.printMessage(
-          BookingReferenceGenerator.generateBookingReference(),
-          bookingName,
-          options[1],
-          options[3]);
+          bookingRef, bookingName, options[1], options[3]);
+      // Need to create booking class, which will contain an array list of type booking with all
+      // this info, to be checked when printing bookings
     }
   }
 
