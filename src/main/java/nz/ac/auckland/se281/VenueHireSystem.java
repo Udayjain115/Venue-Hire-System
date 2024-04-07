@@ -9,8 +9,6 @@ public class VenueHireSystem {
   private ArrayList<Bookings> bookingList = new ArrayList<Bookings>();
   private String systemDate;
 
-  public VenueHireSystem() {}
-
   public void printVenues() {
     if (venueList.size() == 0) {
       MessageCli.NO_VENUES.printMessage();
@@ -41,8 +39,8 @@ public class VenueHireSystem {
             venueList.get(i).getVenueName(),
             venueList.get(i).getVenueCode(),
             venueList.get(i).getCapacityInput(),
-            venueList.get(i).getHireFeeInput(),
-            nextAvailableDate(venueList.get(i).getVenueCode()));
+            venueList.get(i).getHireFeeInput());
+        // nextAvailableDate(venueList.get(i).getVenueCode()));
       }
     }
   }
@@ -164,20 +162,20 @@ public class VenueHireSystem {
   }
 
   // Tries To find the next available date for a venue
-  public String nextAvailableDate(String code) {
-    String nextAvailableDate = "";
-    if (bookingList.size() == 0) {
-      return getSystemDate(); // Returns System date if there are no bookings
-    }
-    for (Bookings booking : bookingList) {
-      if (!(code.equals(booking.getVenueCode()))) {
-        return getSystemDate();
-      } else if (booking.getDate().equals(getSystemDate())) {
+  // public String nextAvailableDate(String code) {
+  //   String nextAvailableDate = "";
+  //   if (bookingList.size() == 0) {
+  //     return getSystemDate(); // Returns System date if there are no bookings
+  //   }
+  //   for (Bookings booking : bookingList) {
+  //     if (!(code.equals(booking.getVenueCode()))) {
+  //       return getSystemDate();
+  //     } else if (booking.getDate().equals(getSystemDate())) {
 
-      }
-    }
-    return "";
-  }
+  //     }
+  //   }
+  //   return "";
+  // }
 
   //   // Earliest date booked is set to an empty string and then is set to the earliest date the
   // venue
@@ -265,8 +263,10 @@ public class VenueHireSystem {
 
     if (systemDate == null) {
       MessageCli.BOOKING_NOT_MADE_DATE_NOT_SET.printMessage();
+      return;
     } else if (venueList.size() == 0) {
       MessageCli.BOOKING_NOT_MADE_NO_VENUES.printMessage();
+
     } else if (!doesCodeExist) {
       MessageCli.BOOKING_NOT_MADE_VENUE_NOT_FOUND.printMessage(options[0]);
     } else if (!isDateValid) {
