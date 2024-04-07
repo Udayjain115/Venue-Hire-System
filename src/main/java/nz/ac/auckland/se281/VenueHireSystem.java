@@ -16,11 +16,20 @@ public class VenueHireSystem {
       MessageCli.NO_VENUES.printMessage();
     } else if (venueList.size() == 1) {
       MessageCli.NUMBER_VENUES.printMessage("is", "one", "");
-      MessageCli.VENUE_ENTRY.printMessage(
-          venueList.get(0).getVenueName(),
-          venueList.get(0).getVenueCode(),
-          venueList.get(0).getCapacityInput(),
-          venueList.get(0).getHireFeeInput());
+      if (systemDate != null) {
+        MessageCli.VENUE_ENTRY.printMessage(
+            venueList.get(0).getVenueName(),
+            venueList.get(0).getVenueCode(),
+            venueList.get(0).getCapacityInput(),
+            venueList.get(0).getHireFeeInput(),
+            nextAvailableDate(venueList.get(0).getVenueCode()));
+      } else {
+        MessageCli.VENUE_ENTRY.printMessage(
+            venueList.get(0).getVenueName(),
+            venueList.get(0).getVenueCode(),
+            venueList.get(0).getCapacityInput(),
+            venueList.get(0).getHireFeeInput());
+      }
     }
     // Prints out Each Venue in venueList, converts the amount of venues
     // to a word representation
@@ -28,21 +37,38 @@ public class VenueHireSystem {
       String numWord = convertStringtoNum(venueList.size());
       MessageCli.NUMBER_VENUES.printMessage("are", numWord, "s");
       for (int i = 0; i < venueList.size(); i++) {
-        MessageCli.VENUE_ENTRY.printMessage(
-            venueList.get(i).getVenueName(),
-            venueList.get(i).getVenueCode(),
-            venueList.get(i).getCapacityInput(),
-            venueList.get(i).getHireFeeInput());
+        if (systemDate != null) {
+          MessageCli.VENUE_ENTRY.printMessage(
+              venueList.get(i).getVenueName(),
+              venueList.get(i).getVenueCode(),
+              venueList.get(i).getCapacityInput(),
+              venueList.get(i).getHireFeeInput(),
+              nextAvailableDate(venueList.get(i).getVenueCode()));
+        } else {
+          MessageCli.VENUE_ENTRY.printMessage(
+              venueList.get(i).getVenueName(),
+              venueList.get(i).getVenueCode(),
+              venueList.get(i).getCapacityInput(),
+              venueList.get(i).getHireFeeInput());
+        }
       }
     } else {
       MessageCli.NUMBER_VENUES.printMessage("are", String.valueOf(venueList.size()), "s");
       for (int i = 0; i < venueList.size(); i++) {
-        MessageCli.VENUE_ENTRY.printMessage(
-            venueList.get(i).getVenueName(),
-            venueList.get(i).getVenueCode(),
-            venueList.get(i).getCapacityInput(),
-            venueList.get(i).getHireFeeInput(),
-            nextAvailableDate(venueList.get(i).getVenueCode()));
+        if (systemDate != null) {
+          MessageCli.VENUE_ENTRY.printMessage(
+              venueList.get(i).getVenueName(),
+              venueList.get(i).getVenueCode(),
+              venueList.get(i).getCapacityInput(),
+              venueList.get(i).getHireFeeInput(),
+              nextAvailableDate(venueList.get(i).getVenueCode()));
+        } else {
+          MessageCli.VENUE_ENTRY.printMessage(
+              venueList.get(i).getVenueName(),
+              venueList.get(i).getVenueCode(),
+              venueList.get(i).getCapacityInput(),
+              venueList.get(i).getHireFeeInput());
+        }
       }
     }
   }
