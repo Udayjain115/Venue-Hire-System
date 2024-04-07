@@ -41,9 +41,8 @@ public class VenueHireSystem {
             venueList.get(i).getVenueName(),
             venueList.get(i).getVenueCode(),
             venueList.get(i).getCapacityInput(),
-            venueList.get(i).getHireFeeInput());
-
-        // nextAvailableDate(venueList.get(i).getVenueCode()));
+            venueList.get(i).getHireFeeInput(),
+            nextAvailableDate(venueList.get(i).getVenueCode()));
       }
     }
   }
@@ -160,66 +159,56 @@ public class VenueHireSystem {
     return false;
   }
 
-  // Tries To find the next available date for a venue
-  // public String nextAvailableDate(String code) {
-  //   String nextAvailableDate = "";
-  //   if (bookingList.size() == 0) {
-  //     return getSystemDate(); // Returns System date if there are no bookings
-  //   }
-  //   for (Bookings booking : bookingList) {
-  //     if (!(code.equals(booking.getVenueCode()))) {
-  //       return getSystemDate();
-  //     } else if (booking.getDate().equals(getSystemDate())) {
-  //       // public String nextAvailableDate(String code) {
-  //       //   String nextAvailableDate = "";
-  //       //   if (bookingList.size() == 0) {
-  //       //     return getSystemDate(); // Returns System date if there are no bookings
-  //       //   }
-  //       //   for (Bookings booking : bookingList) {
-  //       //     if (!(code.equals(booking.getVenueCode()))) {
-  //       //       return getSystemDate();
-  //       //     } else if (booking.getDate().equals(getSystemDate())) {
+  public String datePlusOne(String date) {
 
-  //     }
-  //   }
-  //   return "";
-  // }
+    int[] dateArray = convertDateToInt(date);
+    dateArray[0] = dateArray[0] + 1;
+    // Implements very Crude Date Incrementation
+    if (dateArray[0] > 30) {
+      dateArray[0] = 1;
+      dateArray[1] = dateArray[1] + 1;
+      if (dateArray[1] > 12) {
+        dateArray[1] = 1;
+        dateArray[2] = dateArray[2] + 1;
+      }
+    }
+    // Ensures correct format for date is kept
+    String day = dateArray[0] + "";
+    String month = dateArray[1] + "";
+    String year = dateArray[2] + "";
+    if (dateArray[0] < 10) {
+      day = "0" + dateArray[0];
+    }
+    if (dateArray[1] < 10) {
+      month = "0" + dateArray[1];
+    }
+    if (dateArray[2] < 10) {
+      year = "0" + dateArray[2];
+    }
+    return day + "/" + month + "/" + year;
+  }
 
-  //     }
-  //   }
-  //   return "";
-  // }
+  public String nextAvailableDate(String code) {
+    boolean bookingExists = false;
+    String nextDate = systemDate;
+    for (Bookings booking : bookingList) {
+      if (booking.getVenueCode().equals(code)) {
+        bookingExists = true;
+      }
+    }
+    if (bookingExists == false) {
+      return systemDate;
+    }
+    for (Bookings booking : bookingList) {
+      if (booking.getVenueCode().equals(code)) {
+        if (booking.getDate().equals(nextDate)) {
+          nextDate = datePlusOne(nextDate);
+        }
+      }
+    }
+    return nextDate;
+  }
 
-  //   // Earliest date booked is set to an empty string and then is set to the earliest date the
-  // venue
-  //   // is booked.
-  //   String earlistdateBooked = "";
-  //   for (Bookings booking : bookingList) {
-  //     if (code.equals(booking.getVenueCode())) {
-  //       if (earlistdateBooked.equals("")) {
-  //         earlistdateBooked = booking.getDate();
-  //       } else {
-  //         int[] date1 = convertDateToInt(earlistdateBooked);
-  //         int[] date2 = convertDateToInt(booking.getDate());
-  //         if (date1[2] > date2[2]) {
-  //           earlistdateBooked = booking.getDate();
-  //         } else if (date1[2] == date2[2]) {
-  //           if (date1[1] > date2[1]) {
-  //             earlistdateBooked = booking.getDate();
-  //           } else if (date1[1] == date2[1]) {
-  //             if (date1[0] > date2[0]) {
-  //               earlistdateBooked = booking.getDate();
-  //             }
-  //           }
-  //         }
-  //       }
-  //     }
-  //   }
-  //
-  //   if (dateBiggerThan(earlistdateBooked, getSystemDate())) {
-  //     return getSystemDate();
-  //   }
-  //   return " ";
   public void makeBooking(String[] options) {
 
     if (systemDate == null) {
