@@ -9,6 +9,8 @@ public class VenueHireSystem {
   private ArrayList<Bookings> bookingList = new ArrayList<Bookings>();
   private String systemDate;
 
+  public VenueHireSystem() {}
+
   public void printVenues() {
     if (venueList.size() == 0) {
       MessageCli.NO_VENUES.printMessage();
@@ -39,7 +41,9 @@ public class VenueHireSystem {
             venueList.get(i).getVenueName(),
             venueList.get(i).getVenueCode(),
             venueList.get(i).getCapacityInput(),
-            venueList.get(i).getHireFeeInput());
+            venueList.get(i).getHireFeeInput(),
+            nextAvailableDate(venueList.get(i).getVenueCode()));
+        venueList.get(i).getHireFeeInput();
         // nextAvailableDate(venueList.get(i).getVenueCode()));
       }
     }
@@ -74,14 +78,12 @@ public class VenueHireSystem {
 
   public void createVenue(
       String venueName, String venueCode, String capacityInput, String hireFeeInput) {
-
     Venue venue =
         new Venue(
             venueName,
             venueCode,
             capacityInput,
             hireFeeInput); // Creates a seperate class for venues
-
     // boolean values to check for validity of all variables
     boolean validVenueName = venue.venueNameValid();
     boolean validVenueCode = true;
@@ -90,7 +92,6 @@ public class VenueHireSystem {
     // empty strings that are only set to non-empty strings and used when validVenueCode is false
     String repeatCode = "";
     String repeatVenueCodeName = "";
-
     // Checks if a venue code is used in any other venue in the array list
     for (Venue code : venueList) {
       if (code.getVenueCode().equals(venueCode)) {
@@ -98,7 +99,6 @@ public class VenueHireSystem {
         repeatCode = code.getVenueCode();
         repeatVenueCodeName = code.getVenueName();
         break; // Break statement so that loops is exited if same venue code found
-
       } else {
         validVenueCode = true;
       }
@@ -171,6 +171,20 @@ public class VenueHireSystem {
   //     if (!(code.equals(booking.getVenueCode()))) {
   //       return getSystemDate();
   //     } else if (booking.getDate().equals(getSystemDate())) {
+  //       // public String nextAvailableDate(String code) {
+  //       //   String nextAvailableDate = "";
+  //       //   if (bookingList.size() == 0) {
+  //       //     return getSystemDate(); // Returns System date if there are no bookings
+  //       //   }
+  //       //   for (Bookings booking : bookingList) {
+  //       //     if (!(code.equals(booking.getVenueCode()))) {
+  //       //       return getSystemDate();
+  //       //     } else if (booking.getDate().equals(getSystemDate())) {
+
+  //     }
+  //   }
+  //   return "";
+  // }
 
   //     }
   //   }
@@ -207,8 +221,11 @@ public class VenueHireSystem {
   //     return getSystemDate();
   //   }
   //   return " ";
-
   public void makeBooking(String[] options) {
+    if (systemDate == null) {
+      MessageCli.BOOKING_NOT_MADE_DATE_NOT_SET.printMessage();
+      return;
+    }
 
     // Checks Whether the booking date is in the past
     int[] bookingDate = convertDateToInt(options[1]);
@@ -227,9 +244,7 @@ public class VenueHireSystem {
         }
       }
     }
-
     boolean doesCodeExist = false;
-
     // Checks that the booking code maps to a venue code
     for (Venue code : venueList) {
       if (options[0].equals(code.getVenueCode())) {
@@ -239,9 +254,7 @@ public class VenueHireSystem {
         break;
       }
     }
-
     boolean bookingDateAlreadyInUse = false;
-
     for (Bookings booking : bookingList) {
       if (options[0].equals(booking.getVenueCode()) && options[1].equals(booking.getDate())) {
         bookingDateAlreadyInUse = true;
@@ -284,7 +297,6 @@ public class VenueHireSystem {
   }
 
   //
-
   public void printBookings(String venueCode) {
     boolean venueExists = false;
     boolean bookingExists = false;
