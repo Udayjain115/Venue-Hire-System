@@ -1,6 +1,7 @@
 package nz.ac.auckland.se281;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import nz.ac.auckland.se281.Types.CateringType;
 import nz.ac.auckland.se281.Types.FloralType;
 
@@ -198,6 +199,7 @@ public class VenueHireSystem {
         dateArray[2] = dateArray[2] + 1;
       }
     }
+
     // Ensures correct format for date is kept
     String day = dateArray[0] + "";
     String month = dateArray[1] + "";
@@ -215,6 +217,7 @@ public class VenueHireSystem {
   }
 
   public String nextAvailableDate(String code) {
+    ArrayList<String> bookedDates = new ArrayList<String>();
     boolean bookingExists = false;
     String nextDate = systemDate;
     for (Bookings booking : bookingList) {
@@ -227,9 +230,17 @@ public class VenueHireSystem {
     }
     for (Bookings booking : bookingList) {
       if (booking.getVenueCode().equals(code)) {
-        if (booking.getDate().equals(nextDate)) {
-          nextDate = datePlusOne(nextDate);
-        }
+        bookedDates.add(booking.getDate());
+        // Adds all the dates that are booked for that venue to an arrayList
+      }
+    }
+    Collections.sort(bookedDates);
+    // Sorts all the dates in array list
+    for (String date : bookedDates) {
+      if (date.equals(nextDate)) {
+        nextDate = datePlusOne(nextDate);
+        // Goes through sorted array list and if the date is already booked then increments it by
+        // one
       }
     }
     return nextDate;
