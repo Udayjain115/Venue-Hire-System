@@ -41,9 +41,8 @@ public class VenueHireSystem {
             venueList.get(i).getVenueName(),
             venueList.get(i).getVenueCode(),
             venueList.get(i).getCapacityInput(),
-            venueList.get(i).getHireFeeInput(),
-            nextAvailableDate(venueList.get(i).getVenueCode()));
-        venueList.get(i).getHireFeeInput();
+            venueList.get(i).getHireFeeInput());
+
         // nextAvailableDate(venueList.get(i).getVenueCode()));
       }
     }
@@ -222,6 +221,7 @@ public class VenueHireSystem {
   //   }
   //   return " ";
   public void makeBooking(String[] options) {
+
     if (systemDate == null) {
       MessageCli.BOOKING_NOT_MADE_DATE_NOT_SET.printMessage();
       return;
@@ -274,7 +274,7 @@ public class VenueHireSystem {
       options[3] = String.valueOf(bookingCapacity);
     }
 
-    if (systemDate == null) {
+    if (this.systemDate == null) {
       MessageCli.BOOKING_NOT_MADE_DATE_NOT_SET.printMessage();
       return;
     } else if (venueList.size() == 0) {
