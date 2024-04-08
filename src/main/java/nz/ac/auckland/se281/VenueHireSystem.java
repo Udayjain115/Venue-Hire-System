@@ -319,7 +319,8 @@ public class VenueHireSystem {
     } else {
       String bookingRef = BookingReferenceGenerator.generateBookingReference();
       Bookings booking =
-          new Bookings(options[0], options[1], options[2], options[3], bookingRef, bookingName);
+          new Bookings(
+              options[0], options[1], options[2], options[3], bookingRef, bookingName, systemDate);
       bookingList.add(booking);
       MessageCli.MAKE_BOOKING_SUCCESSFUL.printMessage(
           bookingRef, bookingName, options[1], options[3]);
@@ -443,8 +444,14 @@ public class VenueHireSystem {
         bookingReferenceExists = true;
       }
       if (bookingReferenceExists) {
-        // MessageCli.VIEW_INVOICE.printMessage(bookingReference);
-        // return;
+        MessageCli.INVOICE_CONTENT_TOP_HALF.printMessage(
+            booking.getBookingReference(),
+            booking.getCustomerEmail(),
+            booking.getBookingDate(),
+            booking.getDate(),
+            booking.getNumberOfGuests(),
+            booking.getName());
+        return;
       } else {
         MessageCli.VIEW_INVOICE_BOOKING_NOT_FOUND.printMessage(bookingReference);
       }
