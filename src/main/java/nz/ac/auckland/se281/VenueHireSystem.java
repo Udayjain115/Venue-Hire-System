@@ -368,7 +368,12 @@ public class VenueHireSystem {
     boolean bookingReferenceExists = false;
     String cateringTypeName = cateringType.getName();
     Catering catering = new Catering(bookingReference, cateringTypeName);
+    if (bookingList.size() == 0) {
+      catering.serviceBookingNotFound(bookingReference);
+      return;
+    }
     for (Bookings booking : bookingList) {
+
       if (booking.getBookingReference().equals(bookingReference)) {
         bookingReferenceExists = true;
       }
