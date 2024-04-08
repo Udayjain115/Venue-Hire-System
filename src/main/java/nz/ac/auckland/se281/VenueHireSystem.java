@@ -455,6 +455,7 @@ public class VenueHireSystem {
     int musicCost = 0;
     String floralType = "";
     int floralCost = 0;
+    int totalCost = 0;
     boolean bookingReferenceExists = false;
     if (bookingList.size() == 0) {
       MessageCli.VIEW_INVOICE_BOOKING_NOT_FOUND.printMessage(bookingReference);
@@ -481,6 +482,11 @@ public class VenueHireSystem {
             }
           }
         }
+        totalCost =
+            floralCost
+                + musicCost
+                + (cateringCost * Integer.parseInt(booking.getNumberOfGuests()))
+                + Integer.parseInt(booking.getBookingCost());
 
         MessageCli.INVOICE_CONTENT_TOP_HALF.printMessage(
             booking.getBookingReference(),
@@ -495,7 +501,8 @@ public class VenueHireSystem {
             String.valueOf(cateringCost * Integer.parseInt(booking.getNumberOfGuests())));
         MessageCli.INVOICE_CONTENT_MUSIC_ENTRY.printMessage(String.valueOf(musicCost));
         MessageCli.INVOICE_CONTENT_FLORAL_ENTRY.printMessage(
-            floralType, String.valueOf(floralCost * Integer.parseInt(booking.getNumberOfGuests())));
+            floralType, String.valueOf(floralCost));
+        MessageCli.INVOICE_CONTENT_BOTTOM_HALF.printMessage(String.valueOf(totalCost));
         return;
       } else {
         MessageCli.VIEW_INVOICE_BOOKING_NOT_FOUND.printMessage(bookingReference);

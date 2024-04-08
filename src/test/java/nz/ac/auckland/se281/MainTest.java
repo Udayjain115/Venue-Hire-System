@@ -765,6 +765,88 @@ public class MainTest {
           "Majestic Monarch Mansion (MMM) - 1000 people - $2500 base hire fee. Next available on"
               + " 03/02/2024");
     }
+
+    @Test
+    public void T4_09_make_booking_too_many_attendees() throws Exception {
+      runCommands(
+          unpack(
+              CREATE_TEN_VENUES,
+              SET_DATE,
+              "26/02/2024", //
+              MAKE_BOOKING,
+              options("GGG", "28/05/2024", "client999@email.com", "275")));
+
+      assertContains("Number of attendees adjusted from 275 to 260, as the venue capacity is 260.");
+      assertContains("Successfully created booking 'HUD14D8O'");
+      assertDoesNotContain("Booking not made", true);
+    }
+
+    @Test
+    public void T4_12_booking_next_available_date_after_making_bookings() throws Exception {
+      runCommands(
+          unpack(
+              CREATE_TEN_VENUES, //
+              SET_DATE,
+              "03/02/2024", //
+              MAKE_BOOKING,
+              options("GGG", "05/02/2024", "client001@email.com", "230"),
+              MAKE_BOOKING,
+              options("GGG", "03/02/2024", "client001@email.com", "230"),
+              MAKE_BOOKING,
+              options("GGG", "07/02/2024", "client001@email.com", "230"),
+              MAKE_BOOKING,
+              options("GGG", "06/02/2024", "client001@email.com", "230"),
+              SET_DATE,
+              "05/02/2024", //
+              PRINT_VENUES));
+
+      assertContains(
+          "Frugal Fiesta Hall (FFH) - 80 people - $250 base hire fee. Next available on"
+              + " 05/02/2024");
+      assertContains(
+          "Grand Gala Gardens (GGG) - 260 people - $1500 base hire fee. Next available on"
+              + " 08/02/2024");
+      assertContains(
+          "Majestic Monarch Mansion (MMM) - 1000 people - $2500 base hire fee. Next available on"
+              + " 05/02/2024");
+    }
+
+    @Test
+    public void T3_02_add_music_service_booking_does_not_exist() throws Exception {
+      runCommands(
+          unpack(
+              CREATE_TEN_VENUES,
+              SET_DATE,
+              "26/02/2024", //
+              MAKE_BOOKING,
+              options("GGG", "27/03/2024", "client001@email.com", "230"), //
+              ADD_MUSIC,
+              "ZP4HRCZ4"));
+
+      assertContains(
+          "Music service not added: there is no booking with reference 'ZP4HRCZ4' in the"
+              + " system.");
+      assertDoesNotContain("Successfully added", true);
+    }
+
+    @Test
+    public void T3_02_add_floral_service_booking_does_not_exist() throws Exception {
+      runCommands(
+          unpack(
+              CREATE_TEN_VENUES,
+              SET_DATE,
+              "26/02/2024", //
+              MAKE_BOOKING,
+              options("GGG", "27/03/2024", "client001@email.com", "230"), //
+              ADD_FLORAL,
+              "ZP4HRCZ4",
+              options("n")));
+
+      assertContains(
+          "Floral service not added: there is no booking with reference 'ZP4HRCZ4' in the"
+              + " system.");
+      assertDoesNotContain("Successfully added", true);
+    }
   }
 
   private static final Object[] CREATE_NINE_VENUES =
