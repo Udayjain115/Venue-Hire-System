@@ -385,11 +385,28 @@ public class VenueHireSystem {
         catering.serviceBookingNotFound(bookingReference);
       }
     }
-    // TODO implement this method
   }
 
   public void addServiceMusic(String bookingReference) {
-    // TODO implement this method
+    boolean bookingReferenceExists = false;
+    Music music = new Music(bookingReference);
+    if (bookingList.size() == 0) {
+      music.serviceBookingNotFound(bookingReference);
+      return;
+    }
+    for (Bookings booking : bookingList) {
+
+      if (booking.getBookingReference().equals(bookingReference)) {
+        bookingReferenceExists = true;
+      }
+      if (bookingReferenceExists) {
+
+        music.addService(bookingReference);
+        return;
+      } else {
+        music.serviceBookingNotFound(bookingReference);
+      }
+    }
   }
 
   public void addServiceFloral(String bookingReference, FloralType floralType) {
