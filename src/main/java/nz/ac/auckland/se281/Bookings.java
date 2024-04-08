@@ -8,6 +8,7 @@ public class Bookings {
   private String bookingReference;
   private String venueName;
   private String bookingDate;
+  private String bookingCost;
 
   public Bookings(
       String venueCode,
@@ -16,7 +17,8 @@ public class Bookings {
       String numberOfGuests,
       String bookingReference,
       String venueName,
-      String bookingDate) {
+      String bookingDate,
+      String bookingCost) {
     this.venueCode = venueCode;
     this.Date = Date;
     this.customerEmail = customerEmail;
@@ -24,6 +26,11 @@ public class Bookings {
     this.bookingReference = bookingReference;
     this.venueName = venueName;
     this.bookingDate = bookingDate;
+    this.bookingCost = bookingCost;
+  }
+
+  public String getBookingCost() {
+    return bookingCost;
   }
 
   public String getDate() {

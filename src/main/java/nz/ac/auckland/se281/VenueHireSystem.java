@@ -8,6 +8,7 @@ import nz.ac.auckland.se281.Types.FloralType;
 public class VenueHireSystem {
   private ArrayList<Venue> venueList = new ArrayList<Venue>();
   private ArrayList<Bookings> bookingList = new ArrayList<Bookings>();
+  private ArrayList<Services> serviceList = new ArrayList<Services>();
   private String systemDate;
 
   public VenueHireSystem() {}
@@ -261,6 +262,7 @@ public class VenueHireSystem {
     int[] bookingDate = convertDateToInt(options[1]);
     int[] currentDate = convertDateToInt(systemDate);
     String bookingName = "";
+    String bookingCost = "";
     int bookingCapacity = 0;
     boolean isDateValid = false;
     if (bookingDate[2] > currentDate[2]) {
@@ -280,6 +282,7 @@ public class VenueHireSystem {
       if (options[0].equals(code.getVenueCode())) {
         doesCodeExist = true;
         bookingName = code.getVenueName();
+        bookingCost = code.getHireFeeInput();
         bookingCapacity = Integer.parseInt(code.getCapacityInput());
         break;
       }
@@ -320,7 +323,14 @@ public class VenueHireSystem {
       String bookingRef = BookingReferenceGenerator.generateBookingReference();
       Bookings booking =
           new Bookings(
-              options[0], options[1], options[2], options[3], bookingRef, bookingName, systemDate);
+              options[0],
+              options[1],
+              options[2],
+              options[3],
+              bookingRef,
+              bookingName,
+              systemDate,
+              bookingCost);
       bookingList.add(booking);
       MessageCli.MAKE_BOOKING_SUCCESSFUL.printMessage(
           bookingRef, bookingName, options[1], options[3]);
@@ -368,7 +378,9 @@ public class VenueHireSystem {
   public void addCateringService(String bookingReference, CateringType cateringType) {
     boolean bookingReferenceExists = false;
     String cateringTypeName = cateringType.getName();
-    Catering catering = new Catering(bookingReference, cateringTypeName);
+    int cateringTypeCost = cateringType.getCostPerPerson();
+
+    Catering catering = new Catering(bookingReference, cateringTypeName, cateringTypeCost);
     if (bookingList.size() == 0) {
       catering.serviceBookingNotFound(bookingReference);
       return;
@@ -381,6 +393,7 @@ public class VenueHireSystem {
       if (bookingReferenceExists) {
 
         catering.addService(bookingReference);
+        serviceList.add(catering);
         return;
       } else {
         catering.serviceBookingNotFound(bookingReference);
@@ -403,6 +416,7 @@ public class VenueHireSystem {
       if (bookingReferenceExists) {
 
         music.addService(bookingReference);
+        serviceList.add(music);
         return;
       } else {
         music.serviceBookingNotFound(bookingReference);
@@ -411,9 +425,10 @@ public class VenueHireSystem {
   }
 
   public void addServiceFloral(String bookingReference, FloralType floralType) {
+    int floralTypeCost = floralType.getCost();
     boolean bookingReferenceExists = false;
     String floralTypeName = floralType.getName();
-    Floral floral = new Floral(bookingReference, floralTypeName);
+    Floral floral = new Floral(bookingReference, floralTypeName, floralTypeCost);
     if (bookingList.size() == 0) {
       floral.serviceBookingNotFound(bookingReference);
       return;
@@ -426,6 +441,7 @@ public class VenueHireSystem {
       if (bookingReferenceExists) {
 
         floral.addService(bookingReference);
+        serviceList.add(floral);
         return;
       } else {
         floral.serviceBookingNotFound(bookingReference);
@@ -434,6 +450,11 @@ public class VenueHireSystem {
   }
 
   public void viewInvoice(String bookingReference) {
+    String cateringType = "";
+    int cateringCost = 0;
+    int musicCost = 0;
+    String floralType = "";
+    int floralCost = 0;
     boolean bookingReferenceExists = false;
     if (bookingList.size() == 0) {
       MessageCli.VIEW_INVOICE_BOOKING_NOT_FOUND.printMessage(bookingReference);
@@ -444,6 +465,23 @@ public class VenueHireSystem {
         bookingReferenceExists = true;
       }
       if (bookingReferenceExists) {
+        for (Services service : serviceList) {
+          if (service.getBookingReference().equals(bookingReference)) {
+            if (service instanceof Catering) {
+              Catering catering = (Catering) service;
+              cateringType = catering.getCateringType();
+              cateringCost = catering.getCost();
+            } else if (service instanceof Music) {
+              Music music = (Music) service;
+              musicCost = music.getCost();
+            } else if (service instanceof Floral) {
+              Floral floral = (Floral) service;
+              floralType = floral.getFloralType();
+              floralCost = floral.getCost();
+            }
+          }
+        }
+
         MessageCli.INVOICE_CONTENT_TOP_HALF.printMessage(
             booking.getBookingReference(),
             booking.getCustomerEmail(),
@@ -451,6 +489,13 @@ public class VenueHireSystem {
             booking.getDate(),
             booking.getNumberOfGuests(),
             booking.getName());
+        MessageCli.INVOICE_CONTENT_VENUE_FEE.printMessage(booking.getBookingCost());
+        MessageCli.INVOICE_CONTENT_CATERING_ENTRY.printMessage(
+            cateringType,
+            String.valueOf(cateringCost * Integer.parseInt(booking.getNumberOfGuests())));
+        MessageCli.INVOICE_CONTENT_MUSIC_ENTRY.printMessage(String.valueOf(musicCost));
+        MessageCli.INVOICE_CONTENT_FLORAL_ENTRY.printMessage(
+            floralType, String.valueOf(floralCost * Integer.parseInt(booking.getNumberOfGuests())));
         return;
       } else {
         MessageCli.VIEW_INVOICE_BOOKING_NOT_FOUND.printMessage(bookingReference);

@@ -16,4 +16,9 @@ public class Music extends Services {
   public void serviceBookingNotFound(String bookingReference) {
     MessageCli.SERVICE_NOT_ADDED_BOOKING_NOT_FOUND.printMessage("Music", bookingReference);
   }
+
+  @Override
+  public int getCost() {
+    return 500;
+  }
 }

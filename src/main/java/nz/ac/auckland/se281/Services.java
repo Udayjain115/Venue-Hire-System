@@ -10,4 +10,10 @@ public abstract class Services {
   public abstract void addService(String bookingReference);
 
   public abstract void serviceBookingNotFound(String bookingReference);
+
+  public abstract int getCost();
+
+  public String getBookingReference() {
+    return bookingReference;
+  }
 }
