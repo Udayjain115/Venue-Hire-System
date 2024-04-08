@@ -101,6 +101,10 @@ public class VenueHireSystem {
     }
   }
 
+  public ArrayList<Bookings> getBookinglist() {
+    return bookingList;
+  }
+
   public void createVenue(
       String venueName, String venueCode, String capacityInput, String hireFeeInput) {
     Venue venue =
@@ -361,6 +365,15 @@ public class VenueHireSystem {
   }
 
   public void addCateringService(String bookingReference, CateringType cateringType) {
+    for (Bookings booking : bookingList) {
+      if (booking.getBookingReference().equals(bookingReference)) {
+        String cateringTypeName = cateringType.getName();
+
+        Catering catering = new Catering(bookingReference, cateringTypeName);
+        catering.addService(bookingReference);
+        return;
+      }
+    }
     // TODO implement this method
   }
 
