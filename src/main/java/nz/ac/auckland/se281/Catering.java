@@ -15,4 +15,9 @@ public class Catering extends Services {
         "Catering (" + cateringType + ")", bookingReference);
     // Rest of the Catering class
   }
+
+  @Override
+  public void serviceBookingNotFound(String bookingReference) {
+    MessageCli.SERVICE_NOT_ADDED_BOOKING_NOT_FOUND.printMessage("Catering", bookingReference);
+  }
 }

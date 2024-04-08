@@ -8,4 +8,6 @@ public abstract class Services {
   }
 
   public abstract void addService(String bookingReference);
+
+  public abstract void serviceBookingNotFound(String bookingReference);
 }

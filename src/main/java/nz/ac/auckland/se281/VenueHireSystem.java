@@ -365,13 +365,19 @@ public class VenueHireSystem {
   }
 
   public void addCateringService(String bookingReference, CateringType cateringType) {
+    boolean bookingReferenceExists = false;
+    String cateringTypeName = cateringType.getName();
+    Catering catering = new Catering(bookingReference, cateringTypeName);
     for (Bookings booking : bookingList) {
       if (booking.getBookingReference().equals(bookingReference)) {
-        String cateringTypeName = cateringType.getName();
+        bookingReferenceExists = true;
+      }
+      if (bookingReferenceExists) {
 
-        Catering catering = new Catering(bookingReference, cateringTypeName);
         catering.addService(bookingReference);
         return;
+      } else {
+        catering.serviceBookingNotFound(bookingReference);
       }
     }
     // TODO implement this method
