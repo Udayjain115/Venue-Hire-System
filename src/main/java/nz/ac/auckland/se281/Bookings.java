@@ -3,8 +3,8 @@ package nz.ac.auckland.se281;
 public class Bookings {
   private String venueCode;
   private String Date;
-  private String customerEmail;
-  private String Capacity;
+  // private String customerEmail;
+  // private String Capacity;
   private String bookingReference;
   private String venueName;
 
@@ -17,8 +17,8 @@ public class Bookings {
       String venueName) {
     this.venueCode = venueCode;
     this.Date = Date;
-    this.customerEmail = customerEmail;
-    this.Capacity = Capacity;
+    // this.customerEmail = customerEmail;
+    // this.Capacity = Capacity;
     this.bookingReference = bookingReference;
     this.venueName = venueName;
   }
