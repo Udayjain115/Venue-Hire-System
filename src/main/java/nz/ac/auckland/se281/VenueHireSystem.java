@@ -410,10 +410,44 @@ public class VenueHireSystem {
   }
 
   public void addServiceFloral(String bookingReference, FloralType floralType) {
-    // TODO implement this method
+    boolean bookingReferenceExists = false;
+    String floralTypeName = floralType.getName();
+    Floral floral = new Floral(bookingReference, floralTypeName);
+    if (bookingList.size() == 0) {
+      floral.serviceBookingNotFound(bookingReference);
+      return;
+    }
+    for (Bookings booking : bookingList) {
+
+      if (booking.getBookingReference().equals(bookingReference)) {
+        bookingReferenceExists = true;
+      }
+      if (bookingReferenceExists) {
+
+        floral.addService(bookingReference);
+        return;
+      } else {
+        floral.serviceBookingNotFound(bookingReference);
+      }
+    }
   }
 
   public void viewInvoice(String bookingReference) {
-    // TODO implement this method
+    boolean bookingReferenceExists = false;
+    if (bookingList.size() == 0) {
+      MessageCli.VIEW_INVOICE_BOOKING_NOT_FOUND.printMessage(bookingReference);
+      return;
+    }
+    for (Bookings booking : bookingList) {
+      if (booking.getBookingReference().equals(bookingReference)) {
+        bookingReferenceExists = true;
+      }
+      if (bookingReferenceExists) {
+        // MessageCli.VIEW_INVOICE.printMessage(bookingReference);
+        // return;
+      } else {
+        MessageCli.VIEW_INVOICE_BOOKING_NOT_FOUND.printMessage(bookingReference);
+      }
+    }
   }
 }
