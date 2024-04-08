@@ -4,9 +4,9 @@ public class FloralServices extends Services {
   private String deluxeOrStandard;
   private int cost;
 
-  public FloralServices(String bookingReference, String DeluxeOrStandard, int cost) {
+  public FloralServices(String bookingReference, String deluxeOrStandard, int cost) {
     super(bookingReference);
-    this.deluxeOrStandard = DeluxeOrStandard;
+    this.deluxeOrStandard = deluxeOrStandard;
     this.cost = cost;
   }
 
