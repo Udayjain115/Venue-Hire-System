@@ -1,21 +1,19 @@
 package nz.ac.auckland.se281;
 
-public class Floral extends Services {
-  private String Deluxe_Or_Floral;
+public class FloralServices extends Services {
+  private String deluxeOrStandard;
   private int cost;
 
-  public Floral(String bookingReference, String Deluxe_Or_Floral, int cost) {
+  public FloralServices(String bookingReference, String DeluxeOrStandard, int cost) {
     super(bookingReference);
-    this.Deluxe_Or_Floral = Deluxe_Or_Floral;
+    this.deluxeOrStandard = DeluxeOrStandard;
     this.cost = cost;
-
-    // TODO Auto-generated constructor stub
   }
 
   @Override
   public void addService(String bookingReference) {
     MessageCli.ADD_SERVICE_SUCCESSFUL.printMessage(
-        "Floral (" + Deluxe_Or_Floral + ")", bookingReference);
+        "Floral (" + deluxeOrStandard + ")", bookingReference);
     // Rest of the Catering class
   }
 
@@ -30,6 +28,6 @@ public class Floral extends Services {
   }
 
   public String getFloralType() {
-    return Deluxe_Or_Floral;
+    return deluxeOrStandard;
   }
 }

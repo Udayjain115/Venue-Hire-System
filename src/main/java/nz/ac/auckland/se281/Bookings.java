@@ -2,7 +2,7 @@ package nz.ac.auckland.se281;
 
 public class Bookings {
   private String venueCode;
-  private String Date;
+  private String date;
   private String customerEmail;
   private String numberOfGuests;
   private String bookingReference;
@@ -12,7 +12,7 @@ public class Bookings {
 
   public Bookings(
       String venueCode,
-      String Date,
+      String date,
       String customerEmail,
       String numberOfGuests,
       String bookingReference,
@@ -20,7 +20,7 @@ public class Bookings {
       String bookingDate,
       String bookingCost) {
     this.venueCode = venueCode;
-    this.Date = Date;
+    this.date = date;
     this.customerEmail = customerEmail;
     this.numberOfGuests = numberOfGuests;
     this.bookingReference = bookingReference;
@@ -34,7 +34,7 @@ public class Bookings {
   }
 
   public String getDate() {
-    return Date;
+    return date;
   }
 
   public String getNumberOfGuests() {

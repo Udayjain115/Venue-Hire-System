@@ -4,7 +4,6 @@ public class Music extends Services {
 
   public Music(String bookingReference) {
     super(bookingReference);
-    // TODO Auto-generated constructor stub
   }
 
   @Override

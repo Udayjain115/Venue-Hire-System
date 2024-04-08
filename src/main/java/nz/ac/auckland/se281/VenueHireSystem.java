@@ -14,11 +14,16 @@ public class VenueHireSystem {
   public VenueHireSystem() {}
 
   public void printVenues() {
+    // If there are no venues in the venueList then prints out a message to the user saying that
+    // there are no venues
     if (venueList.size() == 0) {
       MessageCli.NO_VENUES.printMessage();
+
     } else if (venueList.size() == 1) {
+      // If there is only one venue in the venueList then prints out the venue
       MessageCli.NUMBER_VENUES.printMessage("is", "one", "");
       if (systemDate != null) {
+        // If systemDate not set then prints out the venue without the next available date
         MessageCli.VENUE_ENTRY.printMessage(
             venueList.get(0).getVenueName(),
             venueList.get(0).getVenueCode(),
@@ -26,6 +31,7 @@ public class VenueHireSystem {
             venueList.get(0).getHireFeeInput(),
             nextAvailableDate(venueList.get(0).getVenueCode()));
       } else {
+        // If systemDate is set then prints out the venue with the next available date
         MessageCli.VENUE_ENTRY.printMessage(
             venueList.get(0).getVenueName(),
             venueList.get(0).getVenueCode(),
@@ -40,6 +46,7 @@ public class VenueHireSystem {
       MessageCli.NUMBER_VENUES.printMessage("are", numWord, "s");
       for (int i = 0; i < venueList.size(); i++) {
         if (systemDate != null) {
+          // If systemDate not set then prints out the venue without the next available date
           MessageCli.VENUE_ENTRY.printMessage(
               venueList.get(i).getVenueName(),
               venueList.get(i).getVenueCode(),
@@ -47,6 +54,7 @@ public class VenueHireSystem {
               venueList.get(i).getHireFeeInput(),
               nextAvailableDate(venueList.get(i).getVenueCode()));
         } else {
+          // If systemDate is set then prints out the venue with the next available date
           MessageCli.VENUE_ENTRY.printMessage(
               venueList.get(i).getVenueName(),
               venueList.get(i).getVenueCode(),
@@ -55,9 +63,12 @@ public class VenueHireSystem {
         }
       }
     } else {
+      // If there are more than 10 venues then prints out the amount of venues in a numerical
+      // represenatation
       MessageCli.NUMBER_VENUES.printMessage("are", String.valueOf(venueList.size()), "s");
       for (int i = 0; i < venueList.size(); i++) {
         if (systemDate != null) {
+          // If systemDate not set then prints out the venue without the next available date
           MessageCli.VENUE_ENTRY.printMessage(
               venueList.get(i).getVenueName(),
               venueList.get(i).getVenueCode(),
@@ -65,6 +76,7 @@ public class VenueHireSystem {
               venueList.get(i).getHireFeeInput(),
               nextAvailableDate(venueList.get(i).getVenueCode()));
         } else {
+          // If systemDate is set then prints out the venue with the next available date
           MessageCli.VENUE_ENTRY.printMessage(
               venueList.get(i).getVenueName(),
               venueList.get(i).getVenueCode(),
@@ -173,24 +185,6 @@ public class VenueHireSystem {
     return dateInt;
   }
 
-  // Method that compares two dates and returns true if date1 is bigger than date2
-  public boolean dateBiggerThan(String date1, String date2) {
-    int[] date1Array = convertDateToInt(date1);
-    int[] date2Array = convertDateToInt(date2);
-    if (date1Array[2] > date2Array[2]) {
-      return true;
-    } else if (date1Array[2] == date2Array[2]) {
-      if (date1Array[1] > date2Array[1]) {
-        return true;
-      } else if (date1Array[1] == date2Array[1]) {
-        if (date1Array[0] > date2Array[0]) {
-          return true;
-        }
-      }
-    }
-    return false;
-  }
-
   public String datePlusOne(String date) {
 
     int[] dateArray = convertDateToInt(date);
@@ -252,6 +246,7 @@ public class VenueHireSystem {
   }
 
   public void makeBooking(String[] options) {
+    // If the systemDate has not been set prints error message
 
     if (systemDate == null) {
       MessageCli.BOOKING_NOT_MADE_DATE_NOT_SET.printMessage();
@@ -289,11 +284,14 @@ public class VenueHireSystem {
     }
     boolean bookingDateAlreadyInUse = false;
     for (Bookings booking : bookingList) {
+      // Checks if the booking date is already in use
       if (options[0].equals(booking.getVenueCode()) && options[1].equals(booking.getDate())) {
         bookingDateAlreadyInUse = true;
         break;
       }
     }
+    // If the attendees are less than 25% of the capacity adjusts it so that the new attendees are
+    // 25% of the capacity
     if (Integer.parseInt(options[3]) < (0.25 * bookingCapacity)) {
       String newAttendeeNumber = String.valueOf(0.25 * bookingCapacity);
       String numWihoutDecimal = String.valueOf(newAttendeeNumber).split("\\.")[0];
@@ -301,6 +299,8 @@ public class VenueHireSystem {
           options[3], numWihoutDecimal, String.valueOf(bookingCapacity));
       options[3] = numWihoutDecimal;
     }
+    // If there are more atendees than the capacity adjusts it so that the new number is the
+    // capacity
     if (Integer.parseInt(options[3]) > (bookingCapacity)) {
       MessageCli.BOOKING_ATTENDEES_ADJUSTED.printMessage(
           options[3], String.valueOf(bookingCapacity), String.valueOf(bookingCapacity));
@@ -308,18 +308,24 @@ public class VenueHireSystem {
     }
 
     if (this.systemDate == null) {
+      // If the system date is not set then the booking is not made
       MessageCli.BOOKING_NOT_MADE_DATE_NOT_SET.printMessage();
       return;
     } else if (venueList.size() == 0) {
+      // If there are no venues then the booking is not made
       MessageCli.BOOKING_NOT_MADE_NO_VENUES.printMessage();
 
     } else if (!doesCodeExist) {
+      // If the venue code is not found then the booking is not made
       MessageCli.BOOKING_NOT_MADE_VENUE_NOT_FOUND.printMessage(options[0]);
     } else if (!isDateValid) {
+      // If the booking date is in the past then the booking is not made
       MessageCli.BOOKING_NOT_MADE_PAST_DATE.printMessage(options[1], systemDate);
     } else if (bookingDateAlreadyInUse) {
+      // If the booking date is already in use then the booking is not made
       MessageCli.BOOKING_NOT_MADE_VENUE_ALREADY_BOOKED.printMessage(bookingName, options[1]);
     } else {
+      // If all the checks are passed then the booking is made
       String bookingRef = BookingReferenceGenerator.generateBookingReference();
       Bookings booking =
           new Bookings(
@@ -339,11 +345,13 @@ public class VenueHireSystem {
 
   //
   public void printBookings(String venueCode) {
+    // Prints out all the bookings for a specific venue's code
     boolean venueExists = false;
     boolean bookingExists = false;
     String venueName = "";
     for (Bookings bookings : bookingList) {
       if (bookings.getVenueCode().equals(venueCode)) {
+        // Checks to see if the the venue has been booked
         bookingExists = true;
         venueName = bookings.getName();
       }
@@ -352,14 +360,23 @@ public class VenueHireSystem {
       MessageCli.PRINT_BOOKINGS_HEADER.printMessage(venueName);
       for (Bookings bookings : bookingList) {
         if (bookings.getVenueCode().equals(venueCode)) {
+          // Looks through all the bookings and if the venue code provided matches the venue code of
+          // the booking then prints out the booking
           MessageCli.PRINT_BOOKINGS_ENTRY.printMessage(
               bookings.getBookingReference(), bookings.getDate());
         }
       }
     }
     if (bookingExists == false) {
+      if (venueList.size() == 0) {
+        // If there are no venues then prints out a message to the user saying that there are no
+        // venues
+        MessageCli.PRINT_BOOKINGS_VENUE_NOT_FOUND.printMessage(venueCode);
+      }
       for (Venue venue : venueList) {
         if (venue.getVenueCode().equals(venueCode)) {
+          // If the venue code is not found in the booking list then finds the venue name and prints
+          // a statement telling user that that there are no bookings for that venue
           MessageCli.PRINT_BOOKINGS_HEADER.printMessage(venue.getVenueName());
           MessageCli.PRINT_BOOKINGS_NONE.printMessage(venue.getVenueName());
         }
@@ -369,6 +386,7 @@ public class VenueHireSystem {
           }
         }
         if (venueExists == false) {
+          // In the case that there is no venue associated with the venue code
           MessageCli.PRINT_BOOKINGS_VENUE_NOT_FOUND.printMessage(venueCode);
         }
       }
@@ -382,6 +400,8 @@ public class VenueHireSystem {
 
     Catering catering = new Catering(bookingReference, cateringTypeName, cateringTypeCost);
     if (bookingList.size() == 0) {
+      // If there is no booking in the booking list then the service is not added and a message is
+      // printed to the user saying that the booking was not found
       catering.serviceBookingNotFound(bookingReference);
       return;
     }
@@ -391,30 +411,36 @@ public class VenueHireSystem {
         bookingReferenceExists = true;
       }
       if (bookingReferenceExists) {
+        // If it finds the correct booking reference adds the service to the service list
 
         catering.addService(bookingReference);
         serviceList.add(catering);
         return;
       } else {
+        // If the booking reference is not found then the service is not added and a message is sent
+        // to the user saying the booking was not found
         catering.serviceBookingNotFound(bookingReference);
       }
     }
   }
 
   public void addServiceMusic(String bookingReference) {
+
     boolean bookingReferenceExists = false;
     Music music = new Music(bookingReference);
+    // If there are no bookings then the service is not added and a message is printed to the user
+    // accordingly
     if (bookingList.size() == 0) {
       music.serviceBookingNotFound(bookingReference);
       return;
     }
     for (Bookings booking : bookingList) {
-
+      // Checks for the booking reference in the booking list
       if (booking.getBookingReference().equals(bookingReference)) {
         bookingReferenceExists = true;
       }
       if (bookingReferenceExists) {
-
+        // If the booking reference is found then the service is added to the service list
         music.addService(bookingReference);
         serviceList.add(music);
         return;
@@ -425,10 +451,14 @@ public class VenueHireSystem {
   }
 
   public void addServiceFloral(String bookingReference, FloralType floralType) {
+
     int floralTypeCost = floralType.getCost();
     boolean bookingReferenceExists = false;
     String floralTypeName = floralType.getName();
-    Floral floral = new Floral(bookingReference, floralTypeName, floralTypeCost);
+
+    FloralServices floral = new FloralServices(bookingReference, floralTypeName, floralTypeCost);
+    // If there are no bookings then the service is not added and a message is printed to the user
+    // accordingly
     if (bookingList.size() == 0) {
       floral.serviceBookingNotFound(bookingReference);
       return;
@@ -439,6 +469,7 @@ public class VenueHireSystem {
         bookingReferenceExists = true;
       }
       if (bookingReferenceExists) {
+        // If the booking reference is found then the service is added to the service list
 
         floral.addService(bookingReference);
         serviceList.add(floral);
@@ -457,17 +488,23 @@ public class VenueHireSystem {
     int floralCost = 0;
     int totalCost = 0;
     boolean bookingReferenceExists = false;
+    // If there are no bookings then returns that no invoices can be printed
     if (bookingList.size() == 0) {
       MessageCli.VIEW_INVOICE_BOOKING_NOT_FOUND.printMessage(bookingReference);
       return;
     }
     for (Bookings booking : bookingList) {
+      // Looks through all the bookings and if the booking reference is found then it sets the
+      // boolean to true
       if (booking.getBookingReference().equals(bookingReference)) {
         bookingReferenceExists = true;
       }
       if (bookingReferenceExists) {
         for (Services service : serviceList) {
           if (service.getBookingReference().equals(bookingReference)) {
+            // If the booking reference is found then it looks through the service list and if the
+            // booking references match then it finds out what type of service it is and sets the
+            // variables to the correct values
             if (service instanceof Catering) {
               Catering catering = (Catering) service;
               cateringType = catering.getCateringType();
@@ -475,19 +512,20 @@ public class VenueHireSystem {
             } else if (service instanceof Music) {
               Music music = (Music) service;
               musicCost = music.getCost();
-            } else if (service instanceof Floral) {
-              Floral floral = (Floral) service;
+            } else if (service instanceof FloralServices) {
+              FloralServices floral = (FloralServices) service;
               floralType = floral.getFloralType();
               floralCost = floral.getCost();
             }
           }
         }
+        // Calculates the total cost
         totalCost =
             floralCost
                 + musicCost
                 + (cateringCost * Integer.parseInt(booking.getNumberOfGuests()))
                 + Integer.parseInt(booking.getBookingCost());
-
+        // Prints out the Invoice
         MessageCli.INVOICE_CONTENT_TOP_HALF.printMessage(
             booking.getBookingReference(),
             booking.getCustomerEmail(),
