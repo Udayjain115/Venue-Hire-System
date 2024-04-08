@@ -15,8 +15,8 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({
   MainTest.Task1.class,
   MainTest.Task2.class,
-  // MainTest.Task3.class,
-  // MainTest.YourTests.class, // Uncomment this line to run your own tests
+  MainTest.Task3.class,
+  MainTest.YourTests.class, // Uncomment this line to run your own tests
 })
 public class MainTest {
 
@@ -972,19 +972,6 @@ public class MainTest {
           "Majestic Monarch Mansion (MMM) - 1000 people - $2500 base hire fee. Next available on"
               + " 05/02/2024");
     }
-    @Test
-    public void NoVenues() throws Exception {
-      runCommands(
-          unpack(
-              CREATE_TEN_VENUES, //
-              PRINT_BOOKINGS,
-              "ABC"));
-
-      assertContains("Nothing to print: there is no venue with code 'ABC'.");
-      assertDoesNotContain("Bookings for '", true);
-      assertDoesNotContain("No bookings for", true);
-      assertDoesNotContain("s' on ", true);
-    }
 
     @Test
     public void T3_02_add_music_service_booking_does_not_exist() throws Exception {
@@ -1022,7 +1009,89 @@ public class MainTest {
               + " system.");
       assertDoesNotContain("Successfully added", true);
     }
-    
+
+    @Test
+    public void Lunch() throws Exception {
+      runCommands(
+          unpack(
+              CREATE_TEN_VENUES,
+              SET_DATE,
+              "26/02/2024", //
+              MAKE_BOOKING,
+              options("GGG", "27/03/2024", "client001@email.com", "230"), //
+              ADD_CATERING,
+              "HUD14D8O",
+              options("L"), //
+              VIEW_INVOICE,
+              "HUD14D8O"));
+
+      assertContains("Successfully added Catering (Lunch) service to booking 'HUD14D8O'.");
+      assertContains("* Catering (Lunch) - $4600");
+      assertDoesNotContain("not added", true);
+    }
+
+    @Test
+    public void Deluxe() throws Exception {
+      runCommands(
+          unpack(
+              CREATE_TEN_VENUES,
+              SET_DATE,
+              "26/02/2024", //
+              MAKE_BOOKING,
+              options("GGG", "27/03/2024", "client001@email.com", "230"), //
+              ADD_FLORAL,
+              "HUD14D8O",
+              options("y"), //
+              VIEW_INVOICE,
+              "HUD14D8O"));
+
+      assertContains("Successfully added Floral (Deluxe) service to booking 'HUD14D8O'.");
+      assertContains("* Floral (Deluxe) - $1000");
+      assertContains("Total Amount: $2500");
+      assertDoesNotContain("not added", true);
+    }
+
+    @Test
+    public void ExtraPeople() throws Exception {
+      runCommands(
+          unpack(
+              CREATE_TEN_VENUES,
+              SET_DATE,
+              "26/02/2024", //
+              MAKE_BOOKING,
+              options("GGG", "27/03/2024", "client001@email.com", "3000"), //
+              ADD_CATERING,
+              "HUD14D8O",
+              options("B"), //
+              VIEW_INVOICE,
+              "HUD14D8O"));
+
+      assertContains("Successfully added Catering (Breakfast) service to booking 'HUD14D8O'.");
+      assertContains("* Catering (Breakfast) - $3900");
+      assertContains("Total Amount: $5400");
+      assertDoesNotContain("not added", true);
+    }
+
+    @Test
+    public void LessPeople() throws Exception {
+      runCommands(
+          unpack(
+              CREATE_TEN_VENUES,
+              SET_DATE,
+              "26/02/2024", //
+              MAKE_BOOKING,
+              options("GGG", "27/03/2024", "client001@email.com", "1"), //
+              ADD_CATERING,
+              "HUD14D8O",
+              options("B"), //
+              VIEW_INVOICE,
+              "HUD14D8O"));
+
+      assertContains("Successfully added Catering (Breakfast) service to booking 'HUD14D8O'.");
+      assertContains("* Catering (Breakfast) - $975");
+      assertContains("Total Amount: $2475");
+      assertDoesNotContain("not added", true);
+    }
   }
 
   private static final Object[] CREATE_NINE_VENUES =
@@ -1089,6 +1158,4 @@ public class MainTest {
     all.addAll(List.of(options));
     return all.toArray(new String[all.size()]);
   }
-
-  
 }
